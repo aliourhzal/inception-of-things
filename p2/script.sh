@@ -11,9 +11,7 @@ echo -e "\033[1;32mInstalling ArgoCD...\033[0m"
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 
-ARGOCD_SERVER_POD=$(kubectl get pods -n argocd | grep "^argocd-server" | awk '{print $1}')
 ARGOCD_REPO_SERVER_POD=$(kubectl get pods -n argocd | grep "^argocd-repo-server" | awk '{print $1}')
-ARGOCD_SERVER_STATUS=$(kubectl describe pod $ARGOCD_SERVER_POD -n argocd | grep "^Status" | awk '{print $2}')
 ARGOCD_REPO_SERVER_STATUS=$(kubectl describe pod $ARGOCD_REPO_SERVER_POD -n argocd | grep "^Status" | awk '{print $2}')
 
 echo -e "\033[1;32mStarting ArgoCD repo server...\033[0m"
@@ -21,6 +19,9 @@ while [ $ARGOCD_REPO_SERVER_STATUS != "Running" ]; do
     sleep 1
     ARGOCD_REPO_SERVER_STATUS=$(kubectl describe pod $ARGOCD_REPO_SERVER_POD -n argocd | grep "^Status" | awk '{print $2}')
 done
+
+ARGOCD_SERVER_POD=$(kubectl get pods -n argocd | grep "^argocd-server" | awk '{print $1}')
+ARGOCD_SERVER_STATUS=$(kubectl describe pod $ARGOCD_SERVER_POD -n argocd | grep "^Status" | awk '{print $2}')
 
 echo -e "\033[1;32mStarting ArgoCD server...\033[0m"
 while [ $ARGOCD_SERVER_STATUS != "Running" ]; do

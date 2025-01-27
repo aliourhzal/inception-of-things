@@ -17,3 +17,9 @@ spec:
     automated:
       selfHeal: true
       prune: true
+    retry:
+        limit: 5
+        backoff:
+          duration: "2s"    # Initial retry delay
+          factor: 2         # Multiplier for the delay (exponential backoff)
+          maxDuration: "30s"
