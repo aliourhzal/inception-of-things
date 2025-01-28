@@ -10,7 +10,7 @@ kubectl create namespace dev
 echo -e "\033[1;32mInstalling ArgoCD...\033[0m"
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-while [ true ]: do
+while [ true ]; do
     i=$(kubectl get pod -n argocd | grep "Running" | wc -l)
     if [ $i = 7 ]
     then
@@ -18,7 +18,7 @@ while [ true ]: do
     else
         echo -en "\r\033[1;32mInitializing cluster...\033[0m"
     fi
-done;
+done
 
 echo -e "\n\033[1;32mCreating ArgoCD app...\033[0m"
 kubectl apply -f application.yaml
@@ -34,4 +34,4 @@ echo "*  url: localhost:8080                         *"
 echo "*                                              *"
 echo "************************************************"
 
-kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl port-forward svc/argocd-server -n argocd 8080:443 &
