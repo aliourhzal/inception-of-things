@@ -1,0 +1,11 @@
+global:
+  edition: ce # Use "ee" for Enterprise Edition
+  hosts:
+    domain: "localhost" # Replace with your domain
+    externalIP: "127.0.0.1" # Replace with your node IP if using a NodePort
+
+  ingress:
+    configureCertmanager: false # Set to true if using cert-manager
+
+gitlab-runner:
+  install: false
