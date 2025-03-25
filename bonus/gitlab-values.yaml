@@ -1,11 +1,56 @@
 global:
-  edition: ce # Use "ee" for Enterprise Edition
   hosts:
-    domain: "localhost" # Replace with your domain
-    externalIP: "127.0.0.1" # Replace with your node IP if using a NodePort
+    domain: "gitlab.local"
+    externalIP: "127.0.0.1"
+    https: false  # Force HTTP for local development
+    gitlab:
+      name: "gitlab.local"
+      host: "gitlab.local"
+      https: false
+    registry:
+      host: "registry.gitlab.local"
+      https: false
+    minio:
+      host: "minio.gitlab.local"
+      https: false
 
   ingress:
-    configureCertmanager: false # Set to true if using cert-manager
+    configureCertmanager: false
+    class: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      traefik.ingress.kubernetes.io/router.middlewares: gitlab-compress@kubernetescrd
+    tls:
+      enabled: false
+
+  monitoring:
+    unicorn:
+      enabled: false
+    sidekiq:
+      enabled: false
+    webservice:
+      enabled: false
+
+gitlab:
+  webservice:
+    ingress:
+      annotations:
+        # Replace Nginx annotations with Traefik equivalents
+        traefik.ingress.kubernetes.io/router.entrypoints: web
+        traefik.ingress.kubernetes.io/router.middlewares: gitlab-compress@kubernetescrd
+        traefik.ingress.kubernetes.io/service-upstream: "true"
+        traefik.ingress.kubernetes.io/proxy-read-timeout: "600"
+        traefik.ingress.kubernetes.io/proxy-connect-timeout: "15"
+        traefik.ingress.kubernetes.io/proxy-body-size: "512m"
+
+prometheus:
+  install: false 
+
+certmanager:
+  install: false
 
 gitlab-runner:
   install: false
+
+nginx-ingress:
+  enabled: false  # Since k3s uses Traefik
