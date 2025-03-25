@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: iot-argocd-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/aliourhzal/iot-app.git
+    targetRevision: HEAD
+    path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    retry:
+        limit: 5
+        backoff:
+          duration: "2s"    # Initial retry delay
+          factor: 2         # Multiplier for the delay (exponential backoff)
+          maxDuration: "30s"

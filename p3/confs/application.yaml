@@ -20,6 +20,6 @@ spec:
     retry:
         limit: 5
         backoff:
-          duration: "2s"    # Initial retry delay
-          factor: 2         # Multiplier for the delay (exponential backoff)
+          duration: "2s"
+          factor: 2    
           maxDuration: "30s"

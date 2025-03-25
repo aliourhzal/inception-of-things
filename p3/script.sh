@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/sh
 
 echo -e "\033[1;32mCreating cluster...\033[0m"
 k3d cluster create inception
